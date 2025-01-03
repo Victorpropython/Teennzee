@@ -1,25 +1,5 @@
 {
-  "name": "teenzee",
-  "version": "1.0.0",
-  "description": "Web app for Teenagers and Youths, To help them for guidiance and counselling thriving through life",
-  "repository": {
-    "type": "git",
-    "url": "\t"
-  },
-  "license": "MIT ",
-  "author": "Victor Chibuike",
-  "type": "commonjs",
-  "main": "server.js",
-  "scripts": {
-    "server": {
-      "port": 3000,
-    }
-  },
   "dependencies": {
-    "colors": "^1.4.0",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.3"
+    "bcrypt": "^5.1.1"
   }
 }
