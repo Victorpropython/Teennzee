@@ -9,13 +9,17 @@ exports.register = async (req, res) => {
     console.log("Incoming request body:", req.body);
     const { name, email, password, role, profile } = req.body;
 
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({ name, email, password: hashedPassword, role, profile: profile || {}, });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn:  process.env.JWT_EXPIRES_IN });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
     res.status(201).json({ message: "User registered successfully", token });
   } catch (error) {

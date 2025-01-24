@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Register = () => {
-  const [formData, setFormData] = React.useState({
-    name: "",
+  const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
     role: "student", // default role
@@ -11,23 +11,20 @@ const Register = () => {
       bio: "",
       skills: "",
       courses: "",
-    }
+    },
   });
 
-  //const [loading, setLoading] = useState(false); // To handle loading state
-
-  const [isMentor, setIsMentor] = useState(false); // To toggle mentor-specific fields
+  const [isMentor, setIsMentor] = useState(false); // Toggle mentor-specific fields
   const [loading, setLoading] = useState(false);
 
-  const { username, email, password, role, profile } = formData;
-
-  const onChange = (e) =>
+  const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const onProfileChange = (e) => {
     setFormData({
       ...formData,
-      profile: { ...profile, [e.target.name]: e.target.value.split(",") },
+      profile: { ...formData.profile, [e.target.name]: e.target.value },
     });
   };
 
@@ -37,15 +34,10 @@ const Register = () => {
     setFormData({ ...formData, role: selectedRole });
   };
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Adjust API URL for your backend
       const baseURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:4000";
       const res = await axios.post(`${baseURL}/api/auth/register`, formData);
 
@@ -53,7 +45,7 @@ const Register = () => {
       console.log("Response:", res.data);
 
       // Optionally, redirect after registration
-      window.location.href = '/login';
+      window.location.href = "/login";
     } catch (err) {
       console.error(err);
       alert("Registration failed: " + (err.response?.data?.message || "Can't register"));
@@ -72,7 +64,7 @@ const Register = () => {
             <input
               type="text"
               name="username"
-              value={username}
+              value={formData.username}
               placeholder="Enter Your Username"
               onChange={onChange}
               required
@@ -84,7 +76,7 @@ const Register = () => {
             <input
               type="email"
               name="email"
-              value={email}
+              value={formData.email}
               placeholder="Enter Your Email"
               onChange={onChange}
               required
@@ -96,7 +88,7 @@ const Register = () => {
             <input
               type="password"
               name="password"
-              value={password}
+              value={formData.password}
               placeholder="Enter Your Password"
               onChange={onChange}
               required
@@ -107,7 +99,7 @@ const Register = () => {
             <label className="block text-sm font-medium text-gray-700">Role</label>
             <select
               name="role"
-              value={role}
+              value={formData.role}
               onChange={onRoleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             >
@@ -119,34 +111,35 @@ const Register = () => {
           {isMentor && (
             <>
               <div>
-                <label>Bio</label>
-                <textarea name="bio" value={profile.bio} onChange={onProfileChange}
-                //onChange={handleInputChange}
-                
-                placeholder="Short bio" style={{width: '100%', padding:'4px'}}></textarea>
+                <label className="block text-sm font-medium text-gray-700">Bio</label>
+                <textarea
+                  name="bio"
+                  value={formData.profile.bio}
+                  onChange={onProfileChange}
+                  placeholder="Short bio"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                ></textarea>
               </div>
               <div>
-                <label>Skills</label>
+                <label className="block text-sm font-medium text-gray-700">Skills</label>
                 <input
                   type="text"
                   name="skills"
-                  value= {formData.skills}
-                  style={{width: '100%', padding:'5px'}}
+                  value={formData.profile.skills}
                   placeholder="Comma-separated"
                   onChange={onProfileChange}
-                  //onChange={onChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
               <div>
-                <label>Courses</label>
+                <label className="block text-sm font-medium text-gray-700">Courses</label>
                 <input
                   type="text"
                   name="courses"
-                  value= {formData.courses}
-                  style={{width: '100%', padding:'5px'}}
+                  value={formData.profile.courses}
                   placeholder="Comma-separated"
                   onChange={onProfileChange}
-                  //onChange={(e) => setFormData({ ...formData, courses: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
             </>

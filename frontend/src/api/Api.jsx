@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://localhost:4000/api', // Base URL for all requests
+  baseURL: 'https://localhost:4000', // Base URL for all requests
   headers: {
     'Content-Type': 'application/json',
   },
@@ -17,29 +17,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const loginUser = async (credentials) => {
-  return axios.post(`${API_BASE_URL}/auth/login`, credentials);
-};
-
-export const registerUser = async (userData) => {
-  return axios.post(`${API_BASE_URL}/auth/register`, userData);
-};
-
-export const forgotPassword = async (email) => {
-  return axios.post(`${API_BASE_URL}/auth/forgot-password`, { email });
-};
-
-export const resetPassword = async (data) => {
-  return axios.post(`${API_BASE_URL}/auth/reset-password`, data);
-};
-
-export const getChatMessages = async () => {
-  return axios.get(`${API_BASE_URL}/chat`);
-};
-
-export const getEvents = async () => {
-  return axios.get(`${API_BASE_URL}/events`);
-};
 
 
 export default api;

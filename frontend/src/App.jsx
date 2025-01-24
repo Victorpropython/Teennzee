@@ -1,5 +1,10 @@
 import React, { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
+//import 'react-toastify/dist/ReactToastify.css';
+//import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+//import 'react-calendar/dist/Calendar.css';
+//import 'react-chat-widget/lib/styles.css';
+import {ToastContainer} from 'react-toastify';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -11,6 +16,8 @@ import AdminDashboard from './components/AdminDashboard';
 import MainLayout from './Layout/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
+import authService from './auth/authServices';
+import authSlice from './auth/authSlice';
 import Contact from './pages/Contact';
 import './index.css';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -75,6 +82,7 @@ function App() {
           )}
         </MainLayout>
       </Router>
+      < ToastContainer />
     </AppContext.Provider>
   );
 }

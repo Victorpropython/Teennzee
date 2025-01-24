@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://127.0.0.1:4001', // Update with your frontend URL
+  origin: process.env.REACT_APP_FRONTEND_URL || 'http://127.0.0.1:3000', // 'http://127.0.0.1:4001', // Update with your frontend URL
   credentials: true, // Allow cookies and authentication
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
@@ -34,6 +34,10 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
+app.use('/api/auth', authRoutes);
+app.use((req, res, next) => {
+  res.send('Hello from the API!');
+});
 app.use('/api/files', fileRoutes)
 app.use('/api/auth', authRoutes);
 app.use('/api/chats', chatRoutes);
@@ -48,15 +52,22 @@ app.get('/api/test', (req, res) => {
   res.send('Hello from the API!');
 });
 
-axios.get('http://localhost:4000/api/endpoint')
-  .then(response => console.log(response))
-  .catch(error => console.error('Error fetching data:', error));
+// axios.get('http://localhost:4000/api/endpoint')
+//   .then(response => console.log(response))
+//   .catch(error => console.error('Error fetching data:', error));
 
 
 app.post('/api/auth/register', (req, res) => {
   res.send({
-    "email": "test@example.com",
-    "password": "password123"
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "123456",
+    "role": "student",
+    "profile": {
+      "bio": "Learning React",
+      "skills": ["JavaScript", "Node.js"],
+      "courses": ["React Basics", "Node.js Basics"]
+    }
   });
 });
 
