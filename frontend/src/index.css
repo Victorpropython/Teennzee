@@ -9,13 +9,21 @@
 body {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  background-color: #f9f9f9; /* Light gray for a clean look */
-  color: #333; /* Dark text color for readability */
+  background-color: #f9f9f9;
+  /* Light gray for a clean look */
+  color: #333;
+  /* Dark text color for readability */
 }
 
 /* Header Styles */
-h1, h2, h3, h4, h5, h6 {
-  color: #2c3e50; /* Navy blue tone for headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #2c3e50;
+  /* Navy blue tone for headings */
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -95,6 +103,33 @@ footer {
   color: white;
   margin-top: 2rem;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
 
 @tailwind base;

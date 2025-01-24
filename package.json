@@ -1,0 +1,33 @@
+{
+  "name": "teenzee",
+  "version": "1.0.0",
+  "description": "Web app for Teenagers and Youths, To help them for guidiance and counselling thriving through life",
+  "repository": {
+    "type": "git",
+    "url": "\t"
+  },
+  "license": "MIT ",
+  "author": "Victor Chibuike",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.3",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
+    "openai": "^4.77.0",
+    "socket.io-client": "^4.8.1",
+    "toastify": "^2.0.1"
+  }
+}

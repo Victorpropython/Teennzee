@@ -1,9 +1,10 @@
 const express = require('express');
 const Chat = require('../models/Chat');
+const { authenticate } = require('../middleware/middlewares');
 const router = express.Router();
 
-// Get all messages between two users
-router.get('/:user1/:user2', async (req, res) => {
+// Get all messages between two users (corrected)
+router.get('/:user1/:user2', authenticate, async (req, res) => {
   try {
     const { user1, user2 } = req.params;
     const chats = await Chat.find({
@@ -14,19 +15,24 @@ router.get('/:user1/:user2', async (req, res) => {
     });
     res.json(chats);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Error retrieving chat messages." });
   }
 });
 
-// Send a message
-router.post('/', async (req, res) => {
+// Send a message (already correct)
+router.post('/', authenticate, async (req, res) => {
   try {
     const { sender, receiver, message } = req.body;
+
+    if (!sender || !receiver || !message) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
     const newChat = new Chat({ sender, receiver, message });
     await newChat.save();
     res.status(201).json(newChat);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Error sending message." });
   }
 });
 

@@ -1,28 +1,64 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import api from '../api/api';
+import React, { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    role: 'student', // default role
+  const [formData, setFormData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "student", // default role
+    profile: {
+      bio: "",
+      skills: "",
+      courses: "",
+    }
   });
 
-  const { username, email, password, role } = formData;
+  //const [loading, setLoading] = useState(false); // To handle loading state
+
+  const [isMentor, setIsMentor] = useState(false); // To toggle mentor-specific fields
+  const [loading, setLoading] = useState(false);
+
+  const { username, email, password, role, profile } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const onProfileChange = (e) => {
+    setFormData({
+      ...formData,
+      profile: { ...profile, [e.target.name]: e.target.value.split(",") },
+    });
+  };
+
+  const onRoleChange = (e) => {
+    const selectedRole = e.target.value;
+    setIsMentor(selectedRole === "mentor");
+    setFormData({ ...formData, role: selectedRole });
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await axios.post('/api/auth/register', formData);
-      alert('Registration successful!');
-      // Redirect or further actions
+      // Adjust API URL for your backend
+      const baseURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:4000";
+      const res = await axios.post(`${baseURL}/api/auth/register`, formData);
+
+      alert("Registration successful!");
+      console.log("Response:", res.data);
+
+      // Optionally, redirect after registration
+      window.location.href = '/login';
     } catch (err) {
-      alert('Registration failed: ' + err.response.data.message);
+      console.error(err);
+      alert("Registration failed: " + (err.response?.data?.message || "Can't register"));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,6 +73,7 @@ const Register = () => {
               type="text"
               name="username"
               value={username}
+              placeholder="Enter Your Username"
               onChange={onChange}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -48,6 +85,7 @@ const Register = () => {
               type="email"
               name="email"
               value={email}
+              placeholder="Enter Your Email"
               onChange={onChange}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -59,6 +97,7 @@ const Register = () => {
               type="password"
               name="password"
               value={password}
+              placeholder="Enter Your Password"
               onChange={onChange}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -69,18 +108,55 @@ const Register = () => {
             <select
               name="role"
               value={role}
-              onChange={onChange}
+              onChange={onRoleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             >
               <option value="student">Student</option>
               <option value="mentor">Mentor</option>
             </select>
           </div>
+
+          {isMentor && (
+            <>
+              <div>
+                <label>Bio</label>
+                <textarea name="bio" value={profile.bio} onChange={onProfileChange}
+                //onChange={handleInputChange}
+                
+                placeholder="Short bio" style={{width: '100%', padding:'4px'}}></textarea>
+              </div>
+              <div>
+                <label>Skills</label>
+                <input
+                  type="text"
+                  name="skills"
+                  value= {formData.skills}
+                  style={{width: '100%', padding:'5px'}}
+                  placeholder="Comma-separated"
+                  onChange={onProfileChange}
+                  //onChange={onChange}
+                />
+              </div>
+              <div>
+                <label>Courses</label>
+                <input
+                  type="text"
+                  name="courses"
+                  value= {formData.courses}
+                  style={{width: '100%', padding:'5px'}}
+                  placeholder="Comma-separated"
+                  onChange={onProfileChange}
+                  //onChange={(e) => setFormData({ ...formData, courses: e.target.value })}
+                />
+              </div>
+            </>
+          )}
           <button
             type="submit"
+            disabled={loading}
             className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
       </div>

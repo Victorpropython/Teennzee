@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const About = () => {
+const About = ({ setTitle }) => {
+  useEffect(() => {
+    setTitle("About"); 
+  }, [setTitle]); 
+
   return (
     <div>
       <h1>About Us</h1>

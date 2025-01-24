@@ -5,7 +5,7 @@ const MentorSchema = new mongoose.Schema({
   expertise: { type: [String], required: true },
   bio: { type: String, required: true },
   availability: { type: Boolean, default: true },
-  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Reference User model
 });
 
 module.exports = mongoose.model('Mentor', MentorSchema);

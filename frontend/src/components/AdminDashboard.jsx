@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../api/Api';
 
 const AdminDashboard = () => {
-  const stats = [
-    { label: 'Total Users', value: 1200 },
-    { label: 'Active Mentors', value: 45 },
-    { label: 'Jobs Posted', value: 200 },
-    { label: 'Reported Issues', value: 5 },
-  ];
+  const [stats, setStats] = useState([]);
+  const [recentActivities, setRecentActivities] = useState([]);
 
-  const recentActivities = [
-    { id: 1, activity: 'User John Doe registered.', time: '10 mins ago' },
-    { id: 2, activity: 'Mentor Jane Smith posted a new resource.', time: '30 mins ago' },
-    { id: 3, activity: 'User Alice reported an issue.', time: '1 hour ago' },
-  ];
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { data } = await api.get('/admin/stats'); // Adjust to your actual endpoint
+        setStats(data.stats);
+      } catch (err) {
+        console.error('Error fetching stats:', err);
+      }
+    };
+
+    const fetchRecentActivities = async () => {
+      try {
+        const { data } = await api.get('/admin/activities'); // Adjust to your actual endpoint
+        setRecentActivities(data.activities);
+      } catch (err) {
+        console.error('Error fetching recent activities:', err);
+      }
+    };
+
+    fetchStats();
+    fetchRecentActivities();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -36,22 +50,6 @@ const AdminDashboard = () => {
               <p className="text-gray-500">{stat.label}</p>
             </div>
           ))}
-        </section>
-
-        {/* Content Management Section */}
-        <section className="bg-white p-6 rounded-lg shadow mb-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Manage Content</h2>
-          <div className="flex flex-wrap gap-4">
-            <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-              Add New User
-            </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-              View All Mentors
-            </button>
-            <button className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700">
-              Review Reports
-            </button>
-          </div>
         </section>
 
         {/* Recent Activities Section */}
