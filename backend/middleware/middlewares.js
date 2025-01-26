@@ -1,28 +1,24 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const express = require('express');
-const bodyParser = require('body-parser');
 const crypto = require('crypto');
-require('dotenv').config(); // Load environment variables
-
-// Generate a random secret for JWT (for development/testing purposes only)
-function generateRandomKey(length = 32) {
-  return crypto.randomBytes(length).toString('base64url');
-}
-
-const randomSecret = generateRandomKey();
-console.log('Generated Secret:', randomSecret);
+require('dotenv').config();
 
 // Middleware to check authentication
 const authenticate = async (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1]; // Extract token from "Bearer <token>"
+  const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select('-password'); // Attach user data to the request
+    const user = await User.findById(decoded.id).select('-password');
+
+    if (!user || !user.tokens.some((t) => t.token === token)) {
+      return res.status(401).json({ message: 'Invalid or expired token.' });
+    }
+
+    req.user = user;
     next();
   } catch (error) {
     res.status(400).json({ message: 'Invalid token.' });
@@ -40,12 +36,20 @@ const authorize = (...roles) => {
 };
 
 // JWT functions
-const generateToken = (user) => {
+const generateToken = async (user) => {
   const payload = {
     id: user._id,
     email: user.email,
   };
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+
+  // Save token to user
+  user.tokens = user.tokens || [];
+  user.tokens.push({ token });
+  await user.save();
+
+  return token;
 };
 
 const verifyToken = (token) => {
@@ -56,7 +60,6 @@ const verifyToken = (token) => {
   }
 };
 
-// Export all middleware and utilities
 module.exports = {
   authenticate,
   authorize,

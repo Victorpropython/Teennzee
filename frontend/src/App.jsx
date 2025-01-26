@@ -1,10 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
-//import 'react-toastify/dist/ReactToastify.css';
-//import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-//import 'react-calendar/dist/Calendar.css';
-//import 'react-chat-widget/lib/styles.css';
-import {ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -16,13 +12,11 @@ import AdminDashboard from './components/AdminDashboard';
 import MainLayout from './Layout/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
-import authService from './auth/authServices';
-import authSlice from './auth/authSlice';
 import Contact from './pages/Contact';
-import './index.css';
 import ProtectedRoute from './components/ProtectedRoute';
-import Loader from './components/Loader'; // Loader for async operations
-import NotFound from './components/NotFound'; // Enhanced 404 component
+import Loader from './components/Loader';
+import NotFound from './components/NotFound';
+import './index.css';
 
 // Context for global state
 export const AppContext = createContext();
@@ -35,10 +29,10 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/auth/register");
+        const response = await axios.get('http://localhost:4000/api/auth/register');
         setData(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
@@ -82,7 +76,7 @@ function App() {
           )}
         </MainLayout>
       </Router>
-      < ToastContainer />
+      <ToastContainer />
     </AppContext.Provider>
   );
 }

@@ -1,12 +1,13 @@
 {
   "name": "frontend",
   "private": true,
-  "proxy": "http://localhost:4000",
+  "proxy": "http://127.0.0.1:3000",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "start": "vite",
     "dev": "vite",
+    "client": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

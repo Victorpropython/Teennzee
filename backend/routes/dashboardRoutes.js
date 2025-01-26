@@ -3,6 +3,6 @@ const { getDashboardData } = require('../controllers/dashboardController');
 const { authenticate, authorize } = require('../middleware/middlewares');
 const router = express.Router();
 
-router.get('/data', authenticate, authorize('admin', 'mentor'), getDashboardData);
+router.get('/data', authenticate, authorize('student', 'admin', 'mentor'), getDashboardData);
 
 module.exports = router;
