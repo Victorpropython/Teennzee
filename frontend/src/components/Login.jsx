@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
-import api from "../api/Api";
-import { useContext } from "react";
+import api from "../api/Api"; // assuming this handles your cloud API requests
 import { AppContext } from "../App";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,8 +11,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const {setData, setIsAuthenticated} = useContext(AppContext);
+  const { setData, setIsAuthenticated } = useContext(AppContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,17 +21,16 @@ const Login = () => {
     try {
       const { data } = await api.post("/auth/login", { email, password });
 
-      // Store token in localStorage ONLY.  Do NOT store the role here.
-      localStorage.setItem("token", data.token);
+      // Assuming the cloud service responds with a user id instead of a token
+      const userId = data.user.id; // User id from the cloud service
+
+      // Store the user id (instead of a token)
+      api.setAuthId(userId); // Function to store the id in your cloud service or state context
 
       alert("Login successful!");
 
-      // Fetch user data (including role) from the backend using the token
-      const userResponse = await api.get('/api/auth/me', {
-        headers: {
-          Authorization: `Bearer ${data.token}`, // Use the token from login
-        },
-      });
+      // Fetch user data based on the user id
+      const userResponse = await api.get(`/api/users/${userId}`);
 
       if (userResponse.data.user) {
         const user = userResponse.data.user;
@@ -45,8 +41,6 @@ const Login = () => {
       } else {
         throw new Error("User data not found after successful login.");
       }
-
-
 
     } catch (err) {
       setIsLoading(false);
