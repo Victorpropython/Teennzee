@@ -40,11 +40,11 @@ const Contact = () => {
             <div className="bg-white rounded-xl shadow-md relative">
               <div className="p-4">
                 <div className="mb-6">
-                  <div className="text-gray-600 my-2">Do You Know Who You Are</div>
-                  <h3 className="text-xl font-bold">A Being Untapped With Great Grace For Accomplishment</h3>
+                  <div className="text-gray-600 my-2">Unleashing</div>
+                  <h3 className="text-xl font-bold">A man With a purpose</h3>
                 </div>
                 <div className="mb-5">
-                  Join our team as a Student or Mentor in Developing or Nurturing Great Talent, We are looking for a motivated individual with a passion...
+                  <img src="/assets/my-pix.jpg" alt="Teenagers" className="rounded-lg mb-4" />
                 </div>
                 <h3 className="text-indigo-500 mb-2">Never UnderEstimate your Abilities</h3>
                 <div className="border border-gray-100 mb-5"></div>
@@ -94,7 +94,7 @@ const Contact = () => {
       </section>
       <h1>Contact Us</h1>
       <p>Email: support@teenzee.com</p>
-      <p>Phone: +123-456-7890</p>
+      <p>Phone: +234924088860</p>
     </>
   );
 };
