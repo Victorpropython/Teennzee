@@ -115,7 +115,19 @@ app.use('/api/protected-route', (req, res, next) => {
   }
 });
 
-
+// Example Node.js/Express route
+app.get('/api/mentors/dashboard', async (req, res) => {
+  try {
+    const mentorId = req.query.mentorId; // Assuming you pass mentorId as a query param
+    const mentorData = await MentorModel.findById(mentorId); // Replace with your DB query logic
+    if (!mentorData) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+    res.json(mentorData);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err });
+  }
+});
 
 
 // Connect to MongoDB and start the server

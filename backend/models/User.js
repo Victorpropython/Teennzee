@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+
+// Updated user schema with token field
 const UserSchema = new mongoose.Schema(
   {
     username: {
@@ -53,9 +55,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true, // A flag for active/inactive accounts
     },
-    tokens: {
-      token: String
-    }
+    tokens: [{
+      token: String,
+      createdAt: { type: Date, default: Date.now }, // Store the time when token was created
+    }]
   },
   { timestamps: true }
 );
@@ -74,6 +77,12 @@ UserSchema.pre('save', async function (next) {
 // Instance method to compare passwords
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+// Add method to add token to the user
+UserSchema.methods.addToken = async function (token) {
+  this.tokens = this.tokens.concat({ token });
+  await this.save();
 };
 
 // Virtual for hiding sensitive data during serialization

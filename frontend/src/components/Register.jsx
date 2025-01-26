@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { FaEye, FaEyeSlash, FaBook, FaCircle, FaEnvelope, FaLightbulb, FaLock, FaPen, FaUserPlus, FaChartPie } from "react-icons/fa";
 
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     role: "student", // default role
     profile: {
       bio: "",
@@ -15,8 +17,20 @@ const Register = () => {
     },
   });
 
-//  const [isMentor, setIsMentor] = useState(false); // Toggle mentor-specific fields
+  const [isMentor, setIsMentor] = useState(false); // Toggle mentor-specific fields
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  
+  const validateForm = () => { 
+    const newErrors = {};
+    if (!formData.username.trim()) newErrors.username = ' Username is required';
+    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]/)) newErrors.email = 'invalid email format.';
+    if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters long";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match.";
+    return newErrors;
+  }
+  
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,6 +51,11 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return
+    }
     setLoading(true);
   
     try {
@@ -44,6 +63,7 @@ const Register = () => {
         name: formData.username, // Map username to name
         email: formData.email,
         password: formData.password,
+        confirmPassword: formData.confirmPassword,
         role: formData.role,
         profile: {
           bio: formData.profile.bio,
@@ -74,11 +94,11 @@ const Register = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center "><FaUserPlus className="inline mr-2" />Register</h2>
         <form onSubmit={onSubmit} className="space-y-4">
           {/* Username Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Username</label>
+            <label className="block text-sm font-medium text-gray-700"> <FaCircle className="absolute inset-y-0 right-3 flex items-center"/> Username</label>
             <input
               type="text"
               name="username"
@@ -92,7 +112,7 @@ const Register = () => {
 
           {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700" > <FaEnvelope className="inline mr-2" /> Email</label>
             <input
               type="email"
               name="email"
@@ -105,7 +125,7 @@ const Register = () => {
           </div>
 {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700"> < FaLock className="inline mr-2"/> Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -128,7 +148,7 @@ const Register = () => {
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-700"> <FaLock className="inline mr-2" /> Confirm Password</label>
             <input
               type="password"
               name="confirmPassword"
@@ -150,14 +170,14 @@ const Register = () => {
               onChange={onRoleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             >
-              <option value="student">Student</option>
-              <option value="mentor">Mentor</option>
+              <option value="student"> Student</option>
+              <option value="mentor">  Mentor</option>
             </select>
           </div>
 
           {/* Bio Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Bio</label>
+            <label className="block text-sm font-medium text-gray-700"> < FaPen className="inline mr-2"/>Bio</label>
             <textarea
               name="bio"
               value={formData.profile.bio}
@@ -169,7 +189,7 @@ const Register = () => {
 
           {/* Skills Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Skills</label>
+            <label className="block text-sm font-medium text-gray-700"> < FaLightbulb className="inline mr-2"/> Skills</label>
             <input
               type="text"
               name="skills"
@@ -182,7 +202,7 @@ const Register = () => {
 
           {/* Courses Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Courses</label>
+            <label className="block text-sm font-medium text-gray-700">< FaBook className="inline mr-2"/>Courses</label>
             <input
               type="text"
               name="courses"
@@ -195,7 +215,7 @@ const Register = () => {
 
           {/* Progress Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Progress</label>
+            <label className="block text-sm font-medium text-gray-700"> < FaChartPie className="inline mr-2"/>Progress</label>
             <input
               type="text"
               name="progress"

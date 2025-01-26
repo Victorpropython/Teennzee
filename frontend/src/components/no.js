@@ -24,7 +24,7 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.username.trim()) newErrors.username = "Username is required.";
-    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Invalid email format.";
+    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]/)) newErrors.email = "Invalid email format.";
     if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters long.";
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match.";
     return newErrors;
