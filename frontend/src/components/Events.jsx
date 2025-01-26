@@ -14,6 +14,7 @@ const Events = () => {
 
   return (
     <div>
+      <textarea className="" id=""></textarea>
       <h1>Events</h1>
       <ul>
         {events.map((event) => (
