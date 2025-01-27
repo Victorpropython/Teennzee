@@ -34,7 +34,7 @@ const Navbar = () => {
             <NavLink to="/Contact" className={linkClass}>
               <i className="  mr-2"></i>< FaAddressBook />Contact Us
             </NavLink>
-            <NavLink to="./components/Events" className={linkClass}>
+            <NavLink to="./events" className={linkClass}>
               <i className="fas fa-user-plus mr-2"></i>< FaVenus/>Events
             </NavLink>
             <NavLink to="/about" className={linkClass}>

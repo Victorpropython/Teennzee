@@ -16,6 +16,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ProtectedRoute from './components/ProtectedRoute';
 import Loader from './components/Loader';
+import Jobs from './pages/jobs';
 import NotFound from './components/NotFound';
 import MentorDashboard from './components/MentorDashboard';
 import './index.css';
@@ -71,6 +72,7 @@ function App() {
               <Route path="/about" element={<About setTitle={updateTitle} />} />
               <Route path="/contact" element={<Contact setTitle={updateTitle} />} />
               <Route path="/login" element={<Login setTitle={updateTitle} />} />
+              <Route path="/jobs" element={<Jobs setTitle={updateTitle} />} />
               <Route path="/forgot-password" element={<ForgotPassword setTitle={updateTitle} />} />
               <Route path="/register" element={<Register setTitle={updateTitle} />} />
 
