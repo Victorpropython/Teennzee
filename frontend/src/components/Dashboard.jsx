@@ -23,6 +23,11 @@ const Dashboard = () => {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    // Perform any logout operations here if needed
+    navigate('/login'); // Navigate to the login page
+  };
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -48,23 +53,21 @@ const Dashboard = () => {
             { label: 'Entertainment', path: '/entertainment' },
             { label: 'Latest News', path: '/news' },
           ].map((item) => (
-            <Button
+            <button
               key={item.label}
               onClick={() => handleNavigation(item.path)}
               className="w-full text-left bg-white text-blue-800 hover:bg-blue-600 hover:text-white"
             >
               {item.label}
-            </Button>
+            </button>
           ))}
         </nav>
-
-        {/* Logout Button */}
-        <Button
-          onClick={() => handleNavigation('/logout')}
+        <button
+          onClick={handleLogout}
           className="bg-red-600 text-white hover:bg-red-700 mt-auto"
         >
           Logout
-        </Button>
+        </button>
       </aside>
 
       {/* Main Content */}

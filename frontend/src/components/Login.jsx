@@ -19,50 +19,30 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const { data } = await api.post("/auth/login", { email, password });
+      // Send login request
+      const response = await api.post('/auth/login', { email, password });
 
-      // Assuming the cloud service responds with a user id instead of a token
-      const userId = data.user.id; // User id from the cloud service
+      // Ensure the response contains user and token data
+      //if (!response.data || !response.data.user ) {
+      //  throw new Error('Invalid login response. User data or token is missing.');
+      //}
 
-      // Store the user id (instead of a token)
-      api.setAuthId(userId); // Function to store the id in your cloud service or state context
+    //  const { token, user } = response.data;
 
-      alert("Login successful!");
+      // Save the token and user data in memory/context (not localStorage)
+      //setData(user);
+      //setIsAuthenticated(true);
 
-      // Fetch user data based on the user id
-      const userResponse = await api.get(`/api/users/${userId}`);
+      // Set the token for future requests
+      //api.defaults.headers.Authorization = `Bearer ${token}`;
 
-      if (userResponse.data.user) {
-        const user = userResponse.data.user;
-        setData(user);
-        setIsAuthenticated(true);
-        // Redirect based on user role from the DATABASE
-        navigate(getRoleBasedRoute(user.role));
-      } else {
-        throw new Error("User data not found after successful login.");
-      }
-
+      // Redirect to the dashboard after login
+      navigate('/dashboard');
     } catch (err) {
-      setIsLoading(false);
-      setErrorMessage(err.response?.data?.message || "Server error");
-      console.error("Login error:", err); // Log the full error for debugging
-
+      setErrorMessage(err.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const getRoleBasedRoute = (role) => {
-    switch (role) {
-      case "mentor":
-        return "/mentor-dashboard";
-      case "student":
-        return "/dashboard";
-      case "admin":
-        return "/admin-dashboard";
-      default:
-        alert("Unknown role. Please contact support.");
-        return "/";
     }
   };
 
@@ -75,7 +55,7 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              <FaEnvelope /> Email
+              <FaEnvelope className="mr-2" /> Email
             </label>
             <input
               type="email"
@@ -88,7 +68,7 @@ const Login = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              <FaLock /> Password
+              <FaLock className="mr-2" /> Password
             </label>
             <div className="relative">
               <input
@@ -108,20 +88,14 @@ const Login = () => {
               </button>
             </div>
           </div>
-          <div className="flex justify-between items-center">
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              Login
-            </button>
-            <button
-              onClick={() => navigate("/mentor/session/create")}
-              className="bg-indigo-600 text-white py-2 px-4 rounded shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ml-4"
-            >
-              Create New Session
-            </button>
-          </div>
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={isLoading}
+          >
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
         </form>
         <div className="mt-4 text-center">
           <Link to="/forgot-password" className="text-indigo-600 hover:underline">
