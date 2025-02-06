@@ -1,10 +1,3 @@
-Teenzee Project, this is a project Built for Teenagers, Back then while growing up faced alot of challenges on which sometimes i wish i was never born.
-The pains and suffering 
-Not having an elder one who you could relate to personally without Holding back any thing, was not there. Except your parent, which implies that not everything will be said.
-So on that note i dont want another generation to pass through same pains as i did,
-So Teenzee was born A place one can meet a life coach, express whole heartedly without holding back and its being giving a guidiance and a family on how and what to Do.
-
-Teennzee : Every ones life counts and Greatness is Possible
 # TeenZee: A MERN-Stack Guidance And Counselling Application For Teens And Younger Youth
 
 Welcome to **TeenZee**, a **Webstack Portfolio Project**! 
@@ -323,6 +316,8 @@ Contributions to this project are welcome! Here are some ways you can contribute
 - Implement new features or enhancements and submit pull requests.
 - Improve documentation and README files.
 
+## 📜 License
+- **This project is licensed under the MIT License. See the LICENSE file for details.**
 
 ## Creator
 
@@ -331,8 +326,7 @@ Contributions to this project are welcome! Here are some ways you can contribute
 
 ---
 
-## 📜 License
-- **This project is licensed under the MIT License. See the LICENSE file for details.**
+
 
 Thank you for exploring **TeenZee - A project for Teens Guidance and counselling**! If you have any questions or feedback, feel free to reach out or open an issue.
 
