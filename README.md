@@ -257,11 +257,6 @@ Before running this project, ensure you have the following installed:
      brew services start mongodb-community
      ``` 
 
-   - Seed the database with sample data:
-     ```bash
-     cd backend/seed
-     node productSeeds.js dev
-     ```
    - You can run both backend and frontend concurrently by installing conconcurrent
      ```bash
      npm install concurrent
